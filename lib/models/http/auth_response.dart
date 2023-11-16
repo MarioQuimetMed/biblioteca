@@ -18,9 +18,9 @@ class AuthResponse {
 
     String toJson() => json.encode(toMap());
 
-    factory AuthResponse.fromMap(Map<String, dynamic> json) => AuthResponse(
+    factory AuthResponse.fromMap(Map<String, dynamic> json,{String token_=''}) => AuthResponse(
         usuario: Usuario.fromMap(json["user"]),
-        token: json["auth-token"],
+        token: token_,
         
     );
 

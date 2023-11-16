@@ -12,7 +12,7 @@ class Usuario {
         this.img,
     });
 
-    int rol;
+    int? rol;
     bool? estado;
     bool? google;
     String nombre;

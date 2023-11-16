@@ -6,21 +6,27 @@ class Logo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
-      padding: const EdgeInsets.only( top: 30 ),
+      padding: const EdgeInsets.all(30),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        //mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon( Icons.bubble_chart_outlined, color: Color(0xff7A6BF5) ),
-          const SizedBox( width: 10 ),
+          Image.asset(
+            'assets/biblioteca.png',
+            width: screenWidth * 0.135, //  5% del ancho de la pantalla
+            height: screenWidth * 0.135, // 5% del ancho de la pantalla
+          ),
+          const SizedBox(width: 1),
           Text(
-            'Admin',
+            'Dominica',
             style: GoogleFonts.montserratAlternates(
-              fontSize: 20,
+              fontSize: screenWidth * 0.04, // 4% del ancho de la pantalla
               fontWeight: FontWeight.w200,
-              color: Colors.white
+              color: Colors.white,
             ),
-          )
+          ),
         ],
       ),
     );

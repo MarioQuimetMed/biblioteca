@@ -4,6 +4,8 @@ import 'package:admin_dashboard/api/CafeApi.dart';
 import 'package:admin_dashboard/models/usuario.dart';
 */
 
+
+import 'package:biblioteca/api/documental.dart';
 import 'package:flutter/material.dart';
 import 'package:biblioteca/api/CafeApi.dart';
 import 'package:biblioteca/models/usuario.dart';
@@ -23,7 +25,8 @@ class UsersProvider extends ChangeNotifier {
 
   getPaginatedUsers() async {
     
-    final resp = await CafeApi.httpGet('/usuarios?limite=100&desde=0');
+    //final resp = await CafeApi.httpGet('/usuarios?limite=100&desde=0');
+    final resp = await DocumentalApi.allUsers('/user');
     final usersResp = UsersResponse.fromMap(resp);
     users = [ ... usersResp.usuarios ];
     isLoading = false;

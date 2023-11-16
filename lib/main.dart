@@ -88,9 +88,10 @@ class MyApp extends StatelessWidget {
         final authProvider = Provider.of<AuthProvider>(context);
 
         if ( authProvider.authStatus == AuthStatus.checking ) {
-          return SplashLayout();
+          return const SplashLayout();
         }
-
+        //print(AuthStatus.authenticated);
+        //print(authProvider.authStatus);
         if( authProvider.authStatus == AuthStatus.authenticated ) {
          return DashboardLayout( child: child! );
         } else {

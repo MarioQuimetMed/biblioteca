@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+// ignore: must_be_immutable
 class MenuItem extends StatefulWidget {
 
   final String text;
   final IconData icon;
-  final bool isActive;
+  bool isActive;
   final Function onPressed;
 
-  const MenuItem({
+   MenuItem({
     Key? key,
     required this.text,
     required this.icon,
@@ -19,41 +20,63 @@ class MenuItem extends StatefulWidget {
   @override
   // ignore: library_private_types_in_public_api
   _MenuItemState createState() => _MenuItemState();
+
 }
 
 class _MenuItemState extends State<MenuItem> {
 
   bool isHovered = false;
 
+  void cambiarActivo( ) {
+    setState(() {
+      widget.isActive = !widget.isActive;
+    });
+  }
+  
+
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
       duration: const Duration( milliseconds: 250 ),
+      decoration: BoxDecoration(
       color: isHovered
-        ? Colors.white.withOpacity(0.1)
-        : widget.isActive ? Colors.white.withOpacity(0.1) : Colors.transparent,
+        ? Colors.orange
+        : widget.isActive ? const Color.fromARGB(255, 237, 112, 59) : Colors.transparent,
+        borderRadius: BorderRadius.circular(10),
+      ),
       child: Material(
         color: Colors.transparent,
-        child: InkWell(
-          onTap: widget.isActive ? null : () => widget.onPressed(),
-          child: Padding(
-            padding: const EdgeInsets.symmetric( horizontal: 30, vertical: 10),
-            child: MouseRegion(
-              onEnter: ( _ ) => setState( () => isHovered = true ),
-              onExit: ( _ ) => setState( () => isHovered = false ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Icon( widget.icon, color: Colors.white.withOpacity(0.3)),
-                  const SizedBox( width: 10 ),
-                  Text(
-                    widget.text,
-                    style: GoogleFonts.roboto(
-                      fontSize: 16,
-                      color: Colors.white.withOpacity(0.8)
-                    ),
-                  )
-                ],
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: InkWell(
+            onTap: () {
+              if (!widget.isActive) {
+                widget.onPressed();
+              }
+              cambiarActivo();
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric( horizontal: 30, vertical: 10),
+              child: MouseRegion(
+                onEnter: ( _ ) => setState( () => isHovered = true ),
+                onExit: ( _ ) => setState( () => isHovered = false ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon( widget.icon, color: Colors.white),
+                    const SizedBox( width: 10 ),
+                    Text(
+                      widget.text,
+                      style: GoogleFonts.roboto(
+                        fontSize: 16,
+                        //color: Colors.white.withOpacity(0.8)
+                        color : Colors.white
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           ),

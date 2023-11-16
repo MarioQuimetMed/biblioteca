@@ -38,7 +38,7 @@ class UsersView extends StatelessWidget {
             sortAscending: usersProvider.ascending,
             sortColumnIndex: usersProvider.sortColumnIndex,
             columns: [
-              const DataColumn(label: Text('Avatar')),
+              //const DataColumn(label: Text('Avatar')),
               DataColumn(label: const Text('Nombre'), onSort: ( colIndex, _ ) {
                 usersProvider.sortColumnIndex = colIndex;
                 usersProvider.sort<String>((user) => user.nombre);

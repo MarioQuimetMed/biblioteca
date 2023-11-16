@@ -19,8 +19,8 @@ class UsersResponse {
     String toJson() => json.encode(toMap());
 
     factory UsersResponse.fromMap(Map<String, dynamic> json) => UsersResponse(
-        total: json["total"],
-        usuarios: List<Usuario>.from(json["usuarios"].map((x) => Usuario.fromMap(x))),
+        total: json["count"],
+        usuarios: List<Usuario>.from(json["allUsers"].map((x) => Usuario.fromMap(x))),
     );
 
     Map<String, dynamic> toMap() => {

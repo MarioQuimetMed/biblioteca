@@ -32,68 +32,57 @@ class Sidebar extends StatelessWidget {
   Widget build(BuildContext context) {
     final sideMenuProvider = Provider.of<SideMenuProvider>(context);
     return Container(
-      width: 200,
+      width: 215,
       height: double.infinity,
       decoration: buildBoxDecoration(),
       child: ListView(
         physics: const ClampingScrollPhysics(),
         children: [
+          
           const Logo(),
           const SizedBox( height: 50 ),
 
           const TextSeparator( text: 'main' ),
 
           MenuItem(
-            text: 'Dashboard',
-            icon: Icons.compass_calibration_outlined,
-            onPressed: () => navigateTo( Flurorouter.dashboardRoute ),
+            text: 'Panel de Control',
+            icon: Icons.auto_awesome_mosaic_rounded,
+            onPressed: () {
+
+              navigateTo( Flurorouter.dashboardRoute );
+            },
             isActive: sideMenuProvider.currentPage == Flurorouter.dashboardRoute,
           ),
 
-          MenuItem( text: 'Orders', icon: Icons.shopping_cart_outlined, onPressed: (){}),
-          MenuItem( text: 'Analytic', icon: Icons.show_chart_outlined, onPressed: (){}),
-          
-          MenuItem(
-            text: 'Categories', 
-            icon: Icons.layers_outlined, 
-            onPressed: () => navigateTo( Flurorouter.categoriesRoute ),
-            isActive: sideMenuProvider.currentPage == Flurorouter.categoriesRoute,
-          ),
 
-          MenuItem( text: 'Products', icon: Icons.dashboard_outlined, onPressed: (){}),
-          MenuItem( text: 'Discount', icon: Icons.attach_money_outlined, onPressed: (){})
-          ,
           MenuItem( 
-            text: 'Users', 
+            text: 'Usuarios', 
             icon: Icons.people_alt_outlined, 
-            onPressed: () => navigateTo( Flurorouter.usersRoute ),
+            onPressed: () => navigateTo( Flurorouter.usersRoute, ),
             isActive: sideMenuProvider.currentPage == Flurorouter.usersRoute,
           ),
-
-          const SizedBox( height: 30 ),
-
-          const TextSeparator( text: 'UI Elements' ),
+          
           
           MenuItem( 
-            text: 'Icons', 
-            icon: Icons.list_alt_outlined, 
+            text: 'Tipos de Acceso', 
+            icon: Icons.crop_free_rounded, 
             onPressed: () => navigateTo( Flurorouter.iconsRoute ),
             isActive: sideMenuProvider.currentPage == Flurorouter.iconsRoute,
           ),
 
-          MenuItem( text: 'Marketing', icon: Icons.mark_email_read_outlined, onPressed: (){}),
-          MenuItem( text: 'Campaign', icon: Icons.note_add_outlined, onPressed: (){}),
           MenuItem( 
-            text: 'Black', 
-            icon: Icons.post_add_outlined, 
+            text: 'Reportes', 
+            icon: Icons.event_note_outlined, 
             onPressed: () => navigateTo( Flurorouter.blankRoute ),
             isActive: sideMenuProvider.currentPage == Flurorouter.blankRoute,
           ),
 
+
           const SizedBox( height: 50 ),
           const TextSeparator( text: 'Exit' ),
           MenuItem( 
-            text: 'Logout', 
+            text: 'Cerrar Sesion', 
+            
             icon: Icons.exit_to_app_outlined, 
             onPressed: (){
               Provider.of<AuthProvider>(context, listen: false)

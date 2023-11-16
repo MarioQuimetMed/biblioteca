@@ -18,10 +18,6 @@ import 'package:biblioteca/services/local_storage.dart';
 import 'package:biblioteca/services/navigation_service.dart';
 import 'package:biblioteca/services/notifications_service.dart ';
 
-
-
-
-
 enum AuthStatus {
   checking,
   authenticated,
@@ -45,20 +41,22 @@ class AuthProvider extends ChangeNotifier {
       'email': email,
       'password': password
     };
-
+    DocumentalApi.configureDio();
     //CafeApi
     DocumentalApi.post('/auth', data ).then(
       (json) {
         print(json);
-        final authResponse = AuthResponse.fromMap(json.data);
+        print(json.headers['auth-token'].toString());
+        final token = (json.headers['auth-token'].toString());
+        final authResponse = AuthResponse.fromMap(json.data,token_: token);
         user = authResponse.usuario;
-        print(json["auth-token"]);
+        
         authStatus = AuthStatus.authenticated;
         LocalStorage.prefs.setString('token', authResponse.token );
         NavigationService.replaceTo(Flurorouter.dashboardRoute);
 
         //CafeApi.configureDio();
-        DocumentalApi.configureDio();
+        
         notifyListeners();
 
       }
@@ -76,40 +74,36 @@ class AuthProvider extends ChangeNotifier {
   register( String email, String password, String name ) {
     
     final data = {
-      'nombre': name,
-      'correo': email,
+      'name': name,
+      'email': email,
       'password': password
     };
-
-    CafeApi.post('/usuarios', data ).then(
+    //CafeApi.post
+    DocumentalApi.post('/auth/register', data ).then(
       (json) {
         print(json);
-        final authResponse = AuthResponse.fromMap(json);
+        final token = (json.headers['auth-token'].toString());
+        final authResponse = AuthResponse.fromMap(json.data,token_: token);
         user = authResponse.usuario;
 
         authStatus = AuthStatus.authenticated;
         LocalStorage.prefs.setString('token', authResponse.token );
         NavigationService.replaceTo(Flurorouter.dashboardRoute);
-
         CafeApi.configureDio();
         notifyListeners();
-
       }
       
     ).catchError( (e){
       print('error en: $e');
       NotificationsService.showSnackbarError('Usuario / Password no válidos');
     });
-    
-    
-    
 
   }
 
   Future<bool> isAuthenticated() async {
-
+    /*
     final token = LocalStorage.prefs.getString('token');
-
+    print(token);
     if( token == null ) {
       authStatus = AuthStatus.notAuthenticated;
       notifyListeners();
@@ -118,6 +112,8 @@ class AuthProvider extends ChangeNotifier {
     
     try {
       final resp = await CafeApi.httpGet('/auth');
+      //final resp = await DocumentalApi.get('')
+
       final authReponse = AuthResponse.fromMap(resp);
       LocalStorage.prefs.setString('token', authReponse.token );
       
@@ -132,11 +128,15 @@ class AuthProvider extends ChangeNotifier {
       notifyListeners();
       return false;
     }
-
+    */
+    authStatus = AuthStatus.notAuthenticated;
+    notifyListeners();
+    return false;
   }
 
 
   logout() {
+    
     LocalStorage.prefs.remove('token');
     authStatus = AuthStatus.notAuthenticated;
     notifyListeners();

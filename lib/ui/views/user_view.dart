@@ -104,24 +104,22 @@ class _UserViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Table(
-        columnWidths: const {
-          0: FixedColumnWidth(250)
-        },
+    return Table(
+      columnWidths: const {
+        0: FixedColumnWidth(250)
+      },
 
-        children: [
-          TableRow(
-            children: [
-              // AVATAR
-              _AvatarContainer(),
+      children: [
+        TableRow(
+          children: [
+            // AVATAR
+            _AvatarContainer(),
 
-              // Formulario de actualización
-              const _UserViewForm(),
-            ]
-          )
-        ],
-      ),
+            // Formulario de actualización
+            const _UserViewForm(),
+          ]
+        )
+      ],
     );
   }
 }
@@ -229,7 +227,7 @@ class _AvatarContainer extends StatelessWidget {
 
     return WhiteCard(
       width: 250,
-      child: Container(
+      child: SizedBox(
         width: double.infinity,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -237,7 +235,7 @@ class _AvatarContainer extends StatelessWidget {
           children: [
             Text('Profile', style: CustomLabels.h2),
             const SizedBox( height: 20 ),
-            Container(
+            SizedBox(
               width: 150,
               height: 160,
               child: Stack(

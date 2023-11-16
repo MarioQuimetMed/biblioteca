@@ -16,7 +16,6 @@ import 'package:biblioteca/ui/buttons/custom_outlined_button.dart';
 import 'package:biblioteca/ui/buttons/link_text.dart';
 import 'package:biblioteca/providers/register_form_provider.dart';
 
-
 class RegisterView extends StatelessWidget {
   const RegisterView({super.key});
 

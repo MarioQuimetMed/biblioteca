@@ -11,7 +11,7 @@ import 'package:biblioteca/router/admin_handlers.dart';
 
 class Flurorouter {
 
-  static final FluroRouter router = new FluroRouter();
+  static final FluroRouter router = FluroRouter();
 
   static String rootRoute     = '/';
 

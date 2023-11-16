@@ -36,7 +36,7 @@ class AuthLayout extends StatelessWidget {
               : _MobileBody( child: child ),
             
             // LinksBar
-            LinksBar()
+            const LinksBar()
           ],
         ),
       )
@@ -64,16 +64,17 @@ class _MobileBody extends StatelessWidget {
         children: [
           const SizedBox( height: 20 ),
           const CustomTitle(),
-          Container(
+          
+          SizedBox(
             width: double.infinity,
             height: 420,
             child: child,
           ),
 
-          Container(
+          const SizedBox(
             width: double.infinity,
             height: 400,
-            child: const BackgroundTwitter(),
+            child: BackgroundTwitter(),
           )
         ],
       ),

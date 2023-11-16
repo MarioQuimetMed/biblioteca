@@ -23,13 +23,21 @@ class DashboardView extends StatelessWidget {
       child: ListView(
         physics: const ClampingScrollPhysics(),
         children: [
-          Text('Dashboard View', style: CustomLabels.h1 ),
+          Text('Anashe', style: CustomLabels.h1 ),
 
           const SizedBox( height: 10 ),
 
           WhiteCard(
             title: user.nombre,
             child: Text( user.correo )
+          ),  
+
+          ElevatedButton(
+            onPressed: () {
+              print('SAliendo PApi');
+              Provider.of<AuthProvider>(context, listen: false).logout();
+            }, 
+            child: const Text('Logout')
           )
 
         ],

@@ -32,7 +32,7 @@ class Navbar extends StatelessWidget {
           if ( size.width <= 700 )
             IconButton(
               icon: const Icon( Icons.menu_outlined ), 
-              onPressed: () => SideMenuProvider.openMenu()
+              onPressed:  () => SideMenuProvider.openMenu()
             ),
           
           const SizedBox( width: 5 ),
