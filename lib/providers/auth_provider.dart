@@ -18,14 +18,9 @@ import 'package:biblioteca/services/local_storage.dart';
 import 'package:biblioteca/services/navigation_service.dart';
 import 'package:biblioteca/services/notifications_service.dart ';
 
-enum AuthStatus {
-  checking,
-  authenticated,
-  notAuthenticated
-}
+enum AuthStatus { checking, authenticated, notAuthenticated }
 
 class AuthProvider extends ChangeNotifier {
-
   // ignore: unused_field
   String? _token;
   AuthStatus authStatus = AuthStatus.checking;
@@ -35,33 +30,31 @@ class AuthProvider extends ChangeNotifier {
     isAuthenticated();
   }
 
-  login( String email, String password ) {
-
-    final data = {
-      'email': email,
-      'password': password
-    };
+  login(String email, String password) {
+    final data = {'email': email, 'password': password};
     DocumentalApi.configureDio();
     //CafeApi
-    DocumentalApi.post('/auth', data ).then(
-      (json) {
-        print(json);
-        print(json.headers['auth-token'].toString());
-        final token = (json.headers['auth-token'].toString());
-        final authResponse = AuthResponse.fromMap(json.data,token_: token);
-        user = authResponse.usuario;
-        
-        authStatus = AuthStatus.authenticated;
-        LocalStorage.prefs.setString('token', authResponse.token );
-        NavigationService.replaceTo(Flurorouter.dashboardRoute);
+    DocumentalApi.post('/auth', data).then((json) {
+      print(json);
+      //print(json.headers['auth-token'].toString());
+      final token = (json.headers['auth-token'].toString());
 
-        //CafeApi.configureDio();
-        
-        notifyListeners();
+      final idUsuario = json.data['user']['id'].toString();
+      print(idUsuario);
+      final cleanedToken = token.replaceAll(RegExp(r'[\[\]\s]'), '');
+      print(cleanedToken);
+      final authResponse = AuthResponse.fromMap(json.data, token_: token);
+      user = authResponse.usuario;
 
-      }
+      authStatus = AuthStatus.authenticated;
+      LocalStorage.prefs.setString('token', cleanedToken);
+      LocalStorage.prefs.setString('id', idUsuario);
+      NavigationService.replaceTo(Flurorouter.dashboardRoute);
 
-    ).catchError( (e){
+      //CafeApi.configureDio();
+
+      notifyListeners();
+    }).catchError((e) {
       print('error en: $e');
       NotificationsService.showSnackbarError('Usuario / Password no válidos');
     });
@@ -70,34 +63,24 @@ class AuthProvider extends ChangeNotifier {
     // NavigationService.replaceTo(Flurorouter.dashboardRoute);
   }
 
-
-  register( String email, String password, String name ) {
-    
-    final data = {
-      'name': name,
-      'email': email,
-      'password': password
-    };
+  register(String email, String password, String name) {
+    final data = {'name': name, 'email': email, 'password': password};
     //CafeApi.post
-    DocumentalApi.post('/auth/register', data ).then(
-      (json) {
-        print(json);
-        final token = (json.headers['auth-token'].toString());
-        final authResponse = AuthResponse.fromMap(json.data,token_: token);
-        user = authResponse.usuario;
+    DocumentalApi.post('/auth/register', data).then((json) {
+      print(json);
+      final token = (json.headers['auth-token'].toString());
+      final authResponse = AuthResponse.fromMap(json.data, token_: token);
+      user = authResponse.usuario;
 
-        authStatus = AuthStatus.authenticated;
-        LocalStorage.prefs.setString('token', authResponse.token );
-        NavigationService.replaceTo(Flurorouter.dashboardRoute);
-        CafeApi.configureDio();
-        notifyListeners();
-      }
-      
-    ).catchError( (e){
+      authStatus = AuthStatus.authenticated;
+      LocalStorage.prefs.setString('token', authResponse.token);
+      NavigationService.replaceTo(Flurorouter.dashboardRoute);
+      CafeApi.configureDio();
+      notifyListeners();
+    }).catchError((e) {
       print('error en: $e');
       NotificationsService.showSnackbarError('Usuario / Password no válidos');
     });
-
   }
 
   Future<bool> isAuthenticated() async {
@@ -134,12 +117,9 @@ class AuthProvider extends ChangeNotifier {
     return false;
   }
 
-
   logout() {
-    
     LocalStorage.prefs.remove('token');
     authStatus = AuthStatus.notAuthenticated;
     notifyListeners();
   }
-
 }

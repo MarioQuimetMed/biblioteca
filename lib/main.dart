@@ -1,4 +1,3 @@
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 // 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
@@ -29,9 +28,8 @@ import 'package:biblioteca/services/notifications_service.dart';
 import 'package:biblioteca/ui/layouts/auth/auth_layout.dart';
 import 'package:biblioteca/api/CafeApi.dart';
 
-
- 
 import 'firebase_options.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
@@ -40,14 +38,14 @@ void main() async {
 
   await LocalStorage.configurePrefs();
   CafeApi.configureDio();
-  
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   Flurorouter.configureRoutes();
   runApp(const AppState());
 }
- 
+
 class AppState extends StatelessWidget {
   const AppState({super.key});
 
@@ -55,20 +53,18 @@ class AppState extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-       // BlocProvider(create: (_) => NotificationsBloc()),
+        // BlocProvider(create: (_) => NotificationsBloc()),
 
-        ChangeNotifierProvider(lazy: false, create: ( _ ) => AuthProvider() ),
-        ChangeNotifierProvider(lazy: false, create: ( _ ) => SideMenuProvider() ),
-        ChangeNotifierProvider(create: ( _ ) => CategoriesProvider() ),
-        ChangeNotifierProvider(create: ( _ ) => UsersProvider() ),
-        ChangeNotifierProvider(create: ( _ ) => UserFormProvider() ),
+        ChangeNotifierProvider(lazy: false, create: (_) => AuthProvider()),
+        ChangeNotifierProvider(lazy: false, create: (_) => SideMenuProvider()),
+        ChangeNotifierProvider(create: (_) => CategoriesProvider()),
+        ChangeNotifierProvider(create: (_) => UsersProvider()),
+        ChangeNotifierProvider(create: (_) => UserFormProvider()),
       ],
-      
       child: const MyApp(),
     );
   }
 }
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -79,51 +75,44 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Biblioteca Dominica',
       initialRoute: '/',
-      
       onGenerateRoute: Flurorouter.router.generator,
       navigatorKey: NavigationService.navigatorKey,
       scaffoldMessengerKey: NotificationsService.messengerKey,
-      builder: ( _ , child ){
-        
+      builder: (_, child) {
         final authProvider = Provider.of<AuthProvider>(context);
 
-        if ( authProvider.authStatus == AuthStatus.checking ) {
+        if (authProvider.authStatus == AuthStatus.checking) {
           return const SplashLayout();
         }
         //print(AuthStatus.authenticated);
         //print(authProvider.authStatus);
-        if( authProvider.authStatus == AuthStatus.authenticated ) {
-         return DashboardLayout( child: child! );
+        if (authProvider.authStatus == AuthStatus.authenticated) {
+          return DashboardLayout(child: child!);
         } else {
-          return AuthLayout( child: child! );
-         }
-              // ignore: dead_code
-              return AuthLayout( child: child );
-
+          return AuthLayout(child: child!);
+        }
+        // ignore: dead_code
+        return AuthLayout(child: child);
       },
       theme: ThemeData.light().copyWith(
-        scrollbarTheme: const ScrollbarThemeData().copyWith(
-          thumbColor: MaterialStateProperty.all(
-            Colors.grey.withOpacity(0.5)
-          )
-        )
-      ),
+          scrollbarTheme: const ScrollbarThemeData().copyWith(
+              thumbColor:
+                  MaterialStateProperty.all(Colors.grey.withOpacity(0.5)))),
     );
   }
 }
 
-
 class HandleNotificationInteractions extends StatefulWidget {
-  
   final Widget child;
   const HandleNotificationInteractions({super.key, required this.child});
 
   @override
-  State<HandleNotificationInteractions> createState() => _HandleNotificationInteractionsState();
+  State<HandleNotificationInteractions> createState() =>
+      _HandleNotificationInteractionsState();
 }
 
-class _HandleNotificationInteractionsState extends State<HandleNotificationInteractions> {
-
+class _HandleNotificationInteractionsState
+    extends State<HandleNotificationInteractions> {
   // It is assumed that all messages contain a data field with the key 'type'
   Future<void> setupInteractedMessage() async {
     // Get any messages which caused the application to open from
@@ -141,14 +130,13 @@ class _HandleNotificationInteractionsState extends State<HandleNotificationInter
     // Stream listener
     FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
   }
-  
-  void _handleMessage(RemoteMessage message) {
 
-    context.read<NotificationsBloc>()
-      .handleRemoteMessage(message);
+  void _handleMessage(RemoteMessage message) {
+    context.read<NotificationsBloc>().handleRemoteMessage(message);
 
     // ignore: unused_local_variable
-    final messageId = message.messageId?.replaceAll(':', '').replaceAll('%', '');
+    final messageId =
+        message.messageId?.replaceAll(':', '').replaceAll('%', '');
     print('Handling a background message ${message.messageId}');
   }
 
